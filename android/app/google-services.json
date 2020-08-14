@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "646655819836",
+    "firebase_url": "https://heppyvents.firebaseio.com",
+    "project_id": "heppyvents",
+    "storage_bucket": "heppyvents.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646655819836:android:e1f765edb6279384bec339",
+        "android_client_info": {
+          "package_name": "com.example.eventapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "646655819836-6fv6cd6kilm4ibqqs7pkj67smmqj6gie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe5FhvM4txQ5CAZn6_pPsqKVVFJqogVBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "646655819836-6fv6cd6kilm4ibqqs7pkj67smmqj6gie.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
