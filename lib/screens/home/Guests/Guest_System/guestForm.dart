@@ -30,6 +30,7 @@ class _GuestFormState extends State<GuestForm> {
   String last_name = '';
   String first_name = '';
   int quantity_invited = 0;
+  String phone_number = '';
   String error = " ";
 
   @override
@@ -139,6 +140,30 @@ class _GuestFormState extends State<GuestForm> {
                     });
                   },
                 ),
+                new Padding(padding: EdgeInsets.all(8.0)),
+                TextFormField(
+                  validator:(val) =>
+                  val.isEmpty ? "Add number please" : null,
+                  decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(20.0),
+                        borderSide: new BorderSide(),
+                      ),
+                      labelText: "Phone number"),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    WhitelistingTextInputFormatter.digitsOnly
+                  ],
+                  style: new TextStyle(
+                    fontFamily: "Poppins",
+                  ),
+                  onChanged: (val) {
+                    setState(() {
+                      phone_number = val;
+                    });
+                  },
+                ),
                 RaisedButton(
                   color: Colors.pink[52],
                   child: Text(
@@ -152,7 +177,7 @@ class _GuestFormState extends State<GuestForm> {
                     {
                       dynamic result = await DatabaseService(uid: widget.user.uid)
                           .addGuestData(index, proximityGroup, last_name,
-                              first_name, quantity_invited);
+                              first_name, quantity_invited,phone_number);
                       Navigator.pop(context);
                       if (result == null) {
                         setState(() => error =

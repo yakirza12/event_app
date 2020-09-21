@@ -5,6 +5,8 @@ class DatabaseService{
   final String uid;
   DatabaseService({ this.uid });
 
+
+
 //collection  reference
 final CollectionReference userCollection = Firestore.instance.collection('users');
   final CollectionReference guestsCollection = Firestore.instance.collection('users'); // will create even does note exist on firestore.
@@ -19,24 +21,30 @@ Future updateUserData(String emailAddress ,String Groom_name ,String Bride_name)
       });
     }
 
-   Future addGuestData(String index ,String proximityGroup ,String last_name ,String first_name,int quantity_invited) async {
+   Future addGuestData(String index ,String proximityGroup ,String last_name ,String first_name,int quantity_invited, String phone_number) async {
      return await userCollection.document(uid).collection('guests').document(index).
      setData({
        'proximityGroup': proximityGroup,
        'last_name' : last_name,
        'first_name' : first_name,
-       'quantity_invited' : quantity_invited
+       'quantity_invited' : quantity_invited,
+       'phone_number' : phone_number
      });
      
    }
+
+
+
+
 /* For Update The data Cell**/
-  Future updateGuestsData(String proximityGroup ,String last_name ,String first_name,int quantity_invited) async
+  Future updateGuestsData(String proximityGroup ,String last_name ,String first_name,int quantity_invited,String phone_number) async
   {
     return await guestsCollection.document(uid).setData({
       'proximityGroup': proximityGroup,
       'last_name' : last_name,
       'first_name' : first_name,
-      'quantity_invited' : quantity_invited
+      'quantity_invited' : quantity_invited,
+      'phone_number' : phone_number
     });
   }
 

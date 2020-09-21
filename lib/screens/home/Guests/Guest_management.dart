@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'Guests_System.dart';
+import 'Guest_System/Guests_System.dart';
+import 'Guest_tools/Tools_page.dart';
 
 class GuestsManagementGrid extends StatefulWidget {
   final Function toggleViewShowHomeVsGuestManagement;
@@ -92,8 +93,11 @@ class _GuestsManagementState extends State<GuestsManagementGrid> {
         };
         break;
       case 1:
-        color = Colors.grey.withOpacity(.5);;
+        color = Colors.grey.withOpacity(.5);
         text = "More Tools";
+        onTap = () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => toolsGrid(widget.user)
+            ));
         iconData = Icons.add_box;
         break;
     }

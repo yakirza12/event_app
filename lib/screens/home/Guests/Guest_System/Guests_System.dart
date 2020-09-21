@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventapp/models/guest.dart';
 import 'package:eventapp/models/user.dart';
+import 'package:eventapp/screens/home/Guests/Guest_tools/Tools_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'guestForm.dart';
+
 
 bool addToGuestList = false;
 
@@ -26,7 +28,7 @@ class _Guests_SystemState extends State<Guests_System> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Guests Table',
+        title: Text('Guests',
           style: new TextStyle(
             color:  Color(0xFFB0CBC4),
 
@@ -42,45 +44,53 @@ class _Guests_SystemState extends State<Guests_System> {
 
         /**/
       ),
-      body: Container(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints.expand(height: 800,width: 5000),
+          child: Column(
+            children: [
+              Text("Guests Table"),
+              Container(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height*0.5,
 
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Color(0xFFFFCCBF),
-            image: DecorationImage(
-              colorFilter: new ColorFilter.mode(
-                  Colors.black.withOpacity(0.83), BlendMode.dstATop),
-              image: AssetImage("assets/Marbel Grey.jpg"),
-              fit: BoxFit.cover,
-            ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Color(0xFFFFCCBF),
+                    image: DecorationImage(
+                      colorFilter: new ColorFilter.mode(
+                          Colors.black.withOpacity(0.83), BlendMode.dstATop),
+                      image: AssetImage("assets/Marbel Grey.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(0.0),
+                  margin:
+                  EdgeInsets.only(top: 0.0,bottom: 20, left: 20.0, right: 20.0),
+                  alignment: Alignment.center,
+                  child: _buildBody(context, widget.user)),
+
+              new Expanded(child: toolsGrid(widget.user)),
+
+            ],
           ),
-          padding: const EdgeInsets.all(0.0),
-          margin:
-              EdgeInsets.only(top: 0.0, bottom: 40.0, left: 20.0, right: 20.0),
-          alignment: Alignment.center,
-          child: _buildBody(context, widget.user)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          var alertDialog = AlertDialog(
-            title: Text("Add Guest"),
-            content: GuestForm(widget.user),
-          );
-          showDialog(context: context, builder: (_) => alertDialog);
-//         Navigator.push(context,
-//              MaterialPageRoute(builder: (context) => StreamProvider<User>.value(
-//                  value: AuthService().user,
-//                  child: GuestForm()
-//              )
-//              )
-//          );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.green,
+        ),
       ),
+   floatingActionButton:  FloatingActionButton(
+
+        onPressed: () {
+      var alertDialog = AlertDialog(
+        title: Text("Add Guest"),
+        content: GuestForm(widget.user),
+      );
+      showDialog(context: context, builder: (_) => alertDialog);
+    },
+    child: Icon(Icons.add),
+    backgroundColor: Colors.green,
+    ),
+
     );
   }
 
@@ -148,7 +158,7 @@ class _Guests_SystemState extends State<Guests_System> {
               ),
               SingleChildScrollView(
                 child: Container(
-                  width: MediaQuery.of(context).size.width*0.9,
+                  width: MediaQuery.of(context).size.width*0.45,
                   child: DataTable(
           horizontalMargin: 10,
           columnSpacing: MediaQuery.of(context).size.width * 0.06,
@@ -191,13 +201,19 @@ class _Guests_SystemState extends State<Guests_System> {
                         },
                       ),
                     ],
+
                     rows: guestList
                         .map((guest) => _buildListItem(context, guest))
                         .toList(),
                   ),
+
                 ),
-              )
-            ]);
+
+              ),
+
+                  //todo put here the tools grid.
+
+                ]);
           }
         });
   }

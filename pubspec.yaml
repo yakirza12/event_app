@@ -20,6 +20,8 @@ dependencies:
   flutter:
     sdk: flutter
   hints: ^0.0.2
+  http: 0.12.2
+  twilio_flutter: 0.0.5
 
 
 

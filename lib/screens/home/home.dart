@@ -7,6 +7,7 @@ import 'package:eventapp/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Businesses/Businesses_system.dart';
 import 'Guests/Guest_management.dart';
 
 class Home extends StatefulWidget {// he made is stateless but im want it in differ because its will be my menu
@@ -177,6 +178,11 @@ Widget createGridItem(int position,BuildContext context)
       color = Colors.deepPurpleAccent.withOpacity(.2);
       iconData = Icons.search;
       text = "Search Suppliers";
+      onTap = () {
+        Navigator.push(context,
+          MaterialPageRoute(builder: (context) => BusinessesGrid(),
+          ) );
+      };
       break;
     case 2:
       color = Colors.pinkAccent.withOpacity(.3);
