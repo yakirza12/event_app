@@ -19,8 +19,8 @@ class toolsGrid extends StatelessWidget {
 
 
 
-    return Scaffold(
-      body: Column(
+    return Column(
+
         children: [
           Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
           createGridItem(0,context),
@@ -29,10 +29,10 @@ class toolsGrid extends StatelessWidget {
           createGridItem(3,context),
 
         ],
-      ),
+      );
 
 
-    );
+
   }
 
   Widget createGridItem(int position,BuildContext context)
@@ -50,7 +50,7 @@ class toolsGrid extends StatelessWidget {
         color = Colors.orange[300].withOpacity(.5);
 
         iconData = Icons.person_add;
-        text = "הוספת אורח\יפ";
+        text = "הוספת אורח\ים ידנית";
         onTap = () {
 
           var alertDialog = AlertDialog(
@@ -62,25 +62,27 @@ class toolsGrid extends StatelessWidget {
 
          };
         break;
-      case 1:
+      case 3:
         onTap =  ()  {
+
+
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => Before_Event_message(user))
           );
         };
-        color = Colors.deepPurpleAccent.withOpacity(.2);
+        color = Colors.deepPurpleAccent.withOpacity(0.9);
         iconData = Icons.forum;
-        text = "שליחת הודעת תודה רבה לאחר האירוע";
+        text = "שליחת הודעות לאורחים";
 
         break;
-      case 2:
+      case 1:
         color = Colors.pinkAccent.withOpacity(.3);
 
-        iconData = Icons.people_outline;
+        iconData = Icons.insert_drive_file;
         text = "טעינת רשימת אורחים מקובץ";
         break;
-      case 3:
-        color = Colors.green.withOpacity(.2);
+      case 2:
+        color = Colors.orange[300].withOpacity(.5);
         iconData = Icons.perm_contact_calendar;
         text =  "טעינת רשימת אורחים מאנשי קשר";
         break;
@@ -124,5 +126,7 @@ class toolsGrid extends StatelessWidget {
     }
     );
 
+
 }
+
 }

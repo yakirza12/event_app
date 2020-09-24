@@ -1,6 +1,7 @@
 
 
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:eventapp/models/user.dart';
 import 'package:eventapp/screens/home/HomeManagement.dart';
 import 'package:eventapp/services/auth.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Businesses/Businesses_system.dart';
+import 'Guests/Guest_System/Guests_System.dart';
 import 'Guests/Guest_management.dart';
 
 class Home extends StatefulWidget {// he made is stateless but im want it in differ because its will be my menu
@@ -25,7 +27,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
+    var user = Provider.of<User>(context);
     return Scaffold(
 
       appBar :AppBar(
@@ -146,6 +148,47 @@ class _HomeState extends State<Home> {
      ] ),
         ),
       ) ,
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.transparent,
+          height: 55,
+          index:2,
+          items:<Widget>
+          [
+            Icon(Icons.people_outline,size:MediaQuery.of(context).size.height*0.035,color: Colors.red[200],),
+            Icon(Icons.search,size:MediaQuery.of(context).size.height*0.035,color: Colors.red[200],),
+            Icon(Icons.home,size:MediaQuery.of(context).size.height*0.055,color: Colors.red[200],),
+            Icon(Icons.calendar_today,size:MediaQuery.of(context).size.height*0.035,color: Colors.red[200],),
+            Icon(Icons.monetization_on,size:MediaQuery.of(context).size.height*0.035,color: Colors.red[200],),
+          ],
+        onTap: (index){
+            switch(index){
+                case 0:
+                  Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Guests_System(user)
+                    ),
+                  );
+                    break;
+
+                case 1:
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BusinessesGrid(),
+                      )
+                  );
+                   break;
+              case 2:
+                break;
+
+                case 3:
+                  break;
+
+                case 4:
+                  break;
+
+            }
+
+
+      }
+      ),
     );
   }
 }
@@ -169,7 +212,8 @@ Widget createGridItem(int position,BuildContext context)
       text = "Guests";
       onTap = () {
         Navigator.push(context,
-          MaterialPageRoute(builder: (context) => GuestsManagementGrid(user:  user)),
+          MaterialPageRoute(builder: (context) => Guests_System(user)
+          ),
         );
       };//TODO open the next page
       break;

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:eventapp/models/guest.dart';
 import 'package:eventapp/models/user.dart';
+import 'package:eventapp/screens/home/Businesses/Businesses_system.dart';
 import 'package:eventapp/screens/home/Guests/Guest_tools/Tools_page.dart';
+import 'package:eventapp/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'guestForm.dart';
@@ -30,56 +33,81 @@ class _Guests_SystemState extends State<Guests_System> {
         centerTitle: true,
         title: Text('Guests',
           style: new TextStyle(
-            color:  Color(0xFFB0CBC4),
+            color:  Colors.red[200],//Color(0xFFB0CBC4),
 
           ),
         ),
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.transparent,
+        
         elevation: 0.0,
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        /**/
+        /*Container(
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
+        decoration: BoxDecoration(
+          color: Color(0xFFFFCCBF),
+          image: DecorationImage(
+            colorFilter: new ColorFilter.mode(
+                Colors.black.withOpacity(0.83), BlendMode.dstATop),
+            image: AssetImage("assets/whine.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),*/
 
         /**/
       ),
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints.expand(height: 800,width: 5000),
-          child: Column(
-            children: [
-              Text("Guests Table"),
-              Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height*0.5,
-
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Color(0xFFFFCCBF),
-                    image: DecorationImage(
-                      colorFilter: new ColorFilter.mode(
-                          Colors.black.withOpacity(0.83), BlendMode.dstATop),
-                      image: AssetImage("assets/Marbel Grey.jpg"),
-                      fit: BoxFit.cover,
+      body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFFFFCCBF),
+          image: DecorationImage(
+            colorFilter: new ColorFilter.mode(
+                Colors.black.withOpacity(0.83), BlendMode.dstATop),
+            image: AssetImage("assets/Marble Gold.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints.expand(height: 800,width: 5000),
+            child: Column(
+              children: [
+              //  Text("Guests Table"),
+                Container(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height*0.5,
+//Color(0xFFFFCCBF)
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Colors.white.withOpacity(0.5),
+                     // image: DecorationImage(
+                      //  colorFilter: new ColorFilter.mode(
+                       //     Colors.black.withOpacity(0.83), BlendMode.dstATop),
+                        //image: AssetImage("assets/Marbel Grey.jpg"),
+                       // fit: BoxFit.cover,
+                    //  ),
                     ),
-                  ),
-                  padding: const EdgeInsets.all(0.0),
-                  margin:
-                  EdgeInsets.only(top: 0.0,bottom: 20, left: 20.0, right: 20.0),
-                  alignment: Alignment.center,
-                  child: _buildBody(context, widget.user)),
+                    padding: const EdgeInsets.all(0.0),
+                    margin:
+                    EdgeInsets.only(top: 10.0,bottom: 10, left: 20.0, right: 20.0),
+                    alignment: Alignment.center,
+                    child: _buildBody(context, widget.user)),
 
-              new Expanded(child: toolsGrid(widget.user)),
+                new Expanded(
+                    child: toolsGrid(widget.user)),
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
-   floatingActionButton:  FloatingActionButton(
-
+  /*
         onPressed: () {
       var alertDialog = AlertDialog(
         title: Text("Add Guest"),
@@ -89,9 +117,49 @@ class _Guests_SystemState extends State<Guests_System> {
     },
     child: Icon(Icons.add),
     backgroundColor: Colors.green,
-    ),
+    ),*/
 
-    );
+      bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: Colors.transparent,
+          height: 55,
+          index:0,
+          items:<Widget>
+          [
+            Icon(Icons.people_outline,size:MediaQuery.of(context).size.height*0.035,color: Colors.red[200],),
+            Icon(Icons.search,size:MediaQuery.of(context).size.height*0.035,color: Colors.red[200],),
+            Icon(Icons.home,size:MediaQuery.of(context).size.height*0.055,color: Colors.red[200],),
+            Icon(Icons.calendar_today,size:MediaQuery.of(context).size.height*0.035,color: Colors.red[200],),
+            Icon(Icons.monetization_on,size:MediaQuery.of(context).size.height*0.035,color: Colors.red[200],),
+          ],
+          onTap: (index){
+            switch(index){
+              case 0:
+                break;
+
+              case 1:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BusinessesGrid(),
+                    )
+                );
+                break;
+              case 2:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                );
+                break;
+
+              case 3:
+                break;
+
+              case 4:
+                break;
+
+            }
+
+
+          }
+      ),
+  );
   }
 
   // this lives OUTSIDE a class
