@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'BusinessesScreens/Photographers.dart';
+
 
 // list of colors that we use in our app
 const kBackgroundColor = Color(0xFFF1EFF1);
@@ -60,8 +62,9 @@ class _BusinessesGridState extends State<BusinessesGrid> {
         color: kBlueColor,
         child: Column(
           children: [
-            SearchBox(),
-            CategoryList(),
+            createGridItem(0,context),
+           // SearchBox(),
+            //CategoryList(),
 
           ],
         ),
@@ -73,10 +76,90 @@ class _BusinessesGridState extends State<BusinessesGrid> {
 }
 
 
+Widget createGridItem(int position,BuildContext context) {
+  //final HomeManagement _home = HomeManagement();
+  var color = Colors.white;
+  var iconData = Icons.add;
+  var text;
+  var onTap = () {};
 
 
+  var user = Provider.of<User>(context);
+  switch (position) {
+    case 0:
+      color = Colors.orange[300].withOpacity(.5);
+
+      iconData = Icons.people_outline;
+      text = "Photographers";
+      onTap = () {
+        Navigator.push(context,
+          MaterialPageRoute(builder: (context) => PhotographList(user)
+          ),
+        );
+      }; //TODO open the next page
+      break;
+    case 1:
+      color = Colors.deepPurpleAccent.withOpacity(.2);
+      iconData = Icons.search;
+      text = "a";
+      onTap = () {
+        /* Navigator.push(context,
+            MaterialPageRoute(builder: (context) => BusinessesGrid(),
+            ) );*/
+      };
+      break;
+    case 2:
+      color = Colors.pinkAccent.withOpacity(.3);
+
+      iconData = Icons.calendar_today;
+      text = "b";
+      break;
+    case 3:
+      color = Colors.green.withOpacity(.2);
+      iconData = Icons.monetization_on;
+      text = "c";
+      break;
+  }
 
 
+  return Builder(builder: (context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+          left: 15.0, right: 15, bottom: 10, top: 10),
+      child: Card(
+        elevation: 10,
+        color: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          side: BorderSide(
+              color: Colors.white
+          ),
+
+        ),
+        child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: onTap,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(iconData, size: 40,
+                  color: Colors.white,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(text, style: TextStyle(color: Colors.white),),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  );
+
+
+/*
 
 
 // We need statefull widget because we are gonna change some state on our category
@@ -165,4 +248,6 @@ class SearchBox extends StatelessWidget {
       ),
     );
   }
+}
+*/
 }

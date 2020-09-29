@@ -7,7 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService{
 
-  HashMap<String,User> _userList = HashMap<String,User>(); //user_id and User map
+  HashMap<String,User> _userList = HashMap<String,User>(); //user_id and User mapUser _currentUser;
+  User _currentUser;
+  User get currentUser => _currentUser;
 
   final FirebaseAuth _auth = FirebaseAuth.instance; //singeltone of the firebase aut h object. to get all data from firebase
 //create user object based firebase object
@@ -23,15 +25,16 @@ Stream<User> get user { // going to return as User object was stream, and who lo
 
 
 //register with email and password
-Future registerWithEmailAndPassword(String email,String Password, String Groom_name , String Bride_name)  async {
+Future registerWithEmailAndPassword(String email,String Password, String Groom_name , String Bride_name,int number_of_messages)  async {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: Password);
       FirebaseUser user = result.user;
+
       // create Document for user database.
-      await DatabaseService(uid: user.uid).updateUserData(email,Groom_name,Bride_name); // sign the user document to get his data.
-      User appUser = _userFromFirebaseUser(user,Groom_name,Bride_name);
+      await DatabaseService(uid: user.uid).updateUserData(email,Groom_name,Bride_name,number_of_messages); // sign the user document to get his data.
+     _currentUser = _userFromFirebaseUser(user,Groom_name,Bride_name);
     //  _userList.putIfAbsent(user.uid,() => appUser);
-      return appUser;
+      return _currentUser;
     }
     catch(e){
       print(e.toString());

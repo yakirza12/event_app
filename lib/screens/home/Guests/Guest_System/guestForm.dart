@@ -17,7 +17,7 @@ class GuestForm extends StatefulWidget {
 
 class _GuestFormState extends State<GuestForm> {
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();//because they are dependence each other (the forms).
 
 /*
   String email = '';

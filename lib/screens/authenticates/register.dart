@@ -16,6 +16,7 @@ class _RegisterState extends State<Register> {
   String password = '';
   String Groom_name = ''; // hatan
   String Bride_name = ''; // kala
+  int number_of_messages = 0;
   String error = " ";
 
   @override
@@ -151,7 +152,7 @@ class _RegisterState extends State<Register> {
                             onPressed: () async {
                               if(_formKey.currentState.validate())//will check if our from is legit
                                 {
-                                  dynamic result = await _auth.registerWithEmailAndPassword(email, password, Groom_name, Bride_name);
+                                  dynamic result = await _auth.registerWithEmailAndPassword(email, password, Groom_name, Bride_name,number_of_messages);
                                   if(result == null){
                                       setState(() => error = 'Could not sign in with those credentials');//TODO check
                                   }

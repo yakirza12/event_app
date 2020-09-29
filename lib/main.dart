@@ -45,7 +45,9 @@ class MyApp extends StatelessWidget {
         ),
 
 
-        home:Wrapper(),
+        home:Directionality(
+            textDirection: TextDirection.rtl,
+            child: Wrapper()),
       ),
     );
   }
