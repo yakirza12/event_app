@@ -80,7 +80,7 @@ class DatabaseService {
     }
   }
 
-
+/*
   Stream listenToPhotographerRealTime() {
     // Register the handler for when the posts data changes
     _photographersCollectionReference.snapshots().listen((postsSnapshot) {
@@ -119,7 +119,7 @@ class DatabaseService {
   }
 }
 
-
+*/
 
 /*
   //get list guests from snapshot
@@ -143,3 +143,4 @@ class DatabaseService {
 
 }
 */
+}

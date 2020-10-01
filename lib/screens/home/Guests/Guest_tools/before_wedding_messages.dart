@@ -1,6 +1,6 @@
 import 'package:eventapp/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

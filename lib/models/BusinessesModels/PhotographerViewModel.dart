@@ -74,6 +74,7 @@ Photographer(
 
 */
 //not created yet
+    /*
     if (!_editting) {
       result = await _firestoreService.addPhotographer(Photographer(
         name: Business_name,
@@ -104,7 +105,7 @@ Photographer(
         imageFileName: _edittingPotographer.imageFileName,
       ));
     }
-
+*/
     setBusy(false);
 
     if (result is String) {
@@ -119,7 +120,7 @@ Photographer(
       );
     }
 
-    _navigationService.pop();
+   // _navigationService.pop();
   }
 
   void setEdittingPotographer(Photographer edittingPhotographer) {

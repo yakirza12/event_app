@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventapp/screens/home/Businesses/AddBusinessForms/AddPhotographerForm.dart';
 import 'package:eventapp/screens/home/Businesses/DetailScreens/PhotographersDetialScreen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,6 +9,7 @@ import 'package:eventapp/models/user.dart';
 
 class PhotographList extends StatefulWidget {
   final User _user;
+
   PhotographList(this._user);
 
   @override
@@ -15,6 +17,7 @@ class PhotographList extends StatefulWidget {
 }
 
 class _PhotographListState extends State<PhotographList> {
+  List<Photographer> _photographers;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,20 +46,91 @@ class _PhotographListState extends State<PhotographList> {
 
         ],
       ),
-      body: Container()//Body(),
+      body: _buildBodyPhotographer(context),
     );
   }
+
+  Widget _buildBodyPhotographer(BuildContext context){
+    const kBackgroundColor = Color(0xFFF1EFF1);
+    const kPrimaryColor = Color(0xFF035AA6);
+    const kSecondaryColor = Color(0xFFFFA41B);
+    const kTextColor = Color(0xFF000839);
+    const kTextLightColor = Color(0xFF747474);
+    const kBlueColor = Color(0xFF40BAD5);
+    const kDefaultPadding = 20.0;
+    return StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance
+            .collection('Businesses')
+            .document('Photograph')
+            .collection('Photograpes')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return LinearProgressIndicator();
+          else {
+            _buildPhographerList(context, snapshot.data.documents);
+            return SafeArea(
+              bottom: false,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: kDefaultPadding / 2),
+                  Expanded(
+                    child: Stack(
+                      children: <Widget>[
+                        // Our background
+                        Container(
+                          margin: EdgeInsets.only(top: 70),
+                          decoration: BoxDecoration(
+                            color: kBackgroundColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40),
+                            ),
+                          ),
+                        ),
+                        ListView.builder(
+                          // here we use our demo procuts list
+                          itemCount: _photographers.length,
+                          itemBuilder: (context, index) => PhotographerCard(
+                            itemIndex: index,
+                            photographer: _photographers[index],
+                            press: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PhotographerDetailScreen(
+                                    photographer: _photographers[index],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+
+          }
+
+        });
+  }
+
+  void _buildPhographerList(
+      BuildContext context, List<DocumentSnapshot> snapshot) {
+
+    _photographers = snapshot.map((data) {
+      final phorographer = Photographer.fromSnapshot(data);
+      return phorographer;
+    }).toList();
+
+  }
+
+
 }
 
-
-const kBackgroundColor = Color(0xFFF1EFF1);
-const kPrimaryColor = Color(0xFF035AA6);
-const kSecondaryColor = Color(0xFFFFA41B);
-const kTextColor = Color(0xFF000839);
-const kTextLightColor = Color(0xFF747474);
-const kBlueColor = Color(0xFF40BAD5);
-
-const kDefaultPadding = 20.0;
 
 // our default Shadow
 const kDefaultShadow = BoxShadow(
@@ -66,60 +140,18 @@ const kDefaultShadow = BoxShadow(
 );
 
 
-
+/*
 class Body extends StatelessWidget {
-  List<Photographer> _photographers;
-  List<Photographer> get photographers => _photographers;
+
+ List<Photographer> get photographers => _photographers;
 
   var storage = FirebaseStorage.instance;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: kDefaultPadding / 2),
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                // Our background
-                Container(
-                  margin: EdgeInsets.only(top: 70),
-                  decoration: BoxDecoration(
-                    color: kBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
-                  ),
-                ),
-                ListView.builder(
-                  // here we use our demo procuts list
-                  itemCount: photographers.length,
-                  itemBuilder: (context, index) => PhotographerCard(
-                    itemIndex: index,
-                    photographer: photographers[index],
-                    press: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PhotographerDetailScreen(
-                            photographer: photographers[index],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+    return
   }
 }
-
+*/
 
 class PhotographerCard extends StatelessWidget {
   const PhotographerCard({
@@ -135,6 +167,13 @@ class PhotographerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const kBackgroundColor = Color(0xFFF1EFF1);
+    const kPrimaryColor = Color(0xFF035AA6);
+    const kSecondaryColor = Color(0xFFFFA41B);
+    const kTextColor = Color(0xFF000839);
+    const kTextLightColor = Color(0xFF747474);
+    const kBlueColor = Color(0xFF40BAD5);
+    const kDefaultPadding = 20.0;
     // It  will provide us total height and width of our screen
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -177,7 +216,7 @@ class PhotographerCard extends StatelessWidget {
                   // image is square but we add extra 20 + 20 padding thats why width is 200
                   width: 200,
                   child: Image.network(
-                    photographer.imageUrl,
+                    photographer.imageUrl.toString(),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -199,7 +238,8 @@ class PhotographerCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding),
                       child: Text(
-                        photographer.name,
+                        "T",
+                       // photographer.name,
                         style: Theme.of(context).textTheme.button,
                       ),
                     ),
