@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 
+import '../../locator.dart';
+
 class SignIn extends StatefulWidget {
 
   final Function toggleView;
@@ -15,7 +17,8 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final AuthService _auth  = AuthService();
+  //final AuthService _auth  = AuthService();
+  final AuthService _auth =  locator<AuthService>();
   final _formKey = GlobalKey<FormState>();// for validation
 
   //text field states

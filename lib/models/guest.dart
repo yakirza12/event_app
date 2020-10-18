@@ -3,12 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Guest{
 
  final String proximityGroup;
- final String  last_name;
+ final String last_name;
  final String first_name;
  final int quantity_invited;
  final DocumentReference reference;
 
-// Guest({this.last_name,this.first_name,this.proximityGroup,this.quantity_invited}); // the constructor.
+//Guest({this.last_name,this.first_name,this.proximityGroup,this.quantity_invited}); // the constructor.
 
  Guest.fromMap(Map<String, dynamic> map, {this.reference})
      : assert(map['proximityGroup'] != null),

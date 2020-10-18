@@ -138,7 +138,7 @@ class _Guests_SystemState extends State<Guests_System> {
 
               case 1:
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BusinessesGrid(),
+                    MaterialPageRoute(builder: (context) => BusinessesGrid(widget.user),
                     )
                 );
                 break;

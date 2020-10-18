@@ -19,12 +19,6 @@ class _GuestFormState extends State<GuestForm> {
 
   final _formKey = GlobalKey<FormState>();//because they are dependence each other (the forms).
 
-/*
-  String email = '';
-  String password = '';
-  String Groom_name = ''; // hatan
-  String Bride_name = ''; // kala
-  */
   String index = UniqueKey().toString();
   String proximityGroup = '';
   String last_name = '';

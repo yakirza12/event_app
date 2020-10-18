@@ -13,18 +13,14 @@ import 'package:stacked/stacked.dart';
 
 import '../../../../locator.dart';
 
-
-
 StorageUploadTask _uploadTask;
 String filePath;
-
 
 class Uploader extends StatefulWidget {
   final File file;
   CloudStorageResult storageResult;
 
-
-  Uploader({Key key,this.file,this.storageResult}):super(key:key);
+  Uploader({Key key, this.file, this.storageResult}) : super(key: key);
 
   @override
   _UploaderState createState() => _UploaderState();
@@ -32,33 +28,23 @@ class Uploader extends StatefulWidget {
 
 class _UploaderState extends State<Uploader> {
   final FirebaseStorage _storage =
-  FirebaseStorage(storageBucket: 'gs://heppyvents.appspot.com');
-
+      FirebaseStorage(storageBucket: 'gs://heppyvents.appspot.com');
 
   var downloadUrl;
 
   /// Starts an upload task
   void _startUpload() {
-
     /// Unique file name for the file
     filePath = 'images/${DateTime.now()}.png';
 
-    setState(()  {
+    setState(() {
       _uploadTask = _storage.ref().child(filePath).putFile(widget.file);
-
     });
   }
 
   @override
   Widget build(BuildContext context) {
     if (_uploadTask != null) {
-     /* if(_uploadTask.isComplete){
-        widget.storageResult = CloudStorageResult(
-          imageUrl: downloadUrl.toString(),
-          imageFileName: widget.file.toString(),
-        );
-      }*/
-
       /// Manage the task state and event subscription with a StreamBuilder
       return StreamBuilder<StorageTaskEvent>(
           stream: _uploadTask.events,
@@ -69,21 +55,16 @@ class _UploaderState extends State<Uploader> {
                 ? event.bytesTransferred / event.totalByteCount
                 : 0;
 
-
-             if(_uploadTask.isComplete){
-        widget.storageResult = CloudStorageResult(
-          imageUrl: downloadUrl.toString(),
-          imageFileName: widget.file.toString(),
-        );
-      }
-
+            if (_uploadTask.isComplete) {
+              widget.storageResult = CloudStorageResult(
+                imageUrl: downloadUrl.toString(),
+                imageFileName: widget.file.toString(),
+              );
+            }
 
             return Column(
-
               children: [
-                if (_uploadTask.isComplete)
-                  Text('🎉🎉🎉'),
-
+                if (_uploadTask.isComplete) Text('🎉🎉🎉'),
 
                 if (_uploadTask.isPaused)
                   FlatButton(
@@ -99,28 +80,20 @@ class _UploaderState extends State<Uploader> {
 
                 // Progress bar
                 LinearProgressIndicator(value: progressPercent),
-                Text(
-                    '${(progressPercent * 100).toStringAsFixed(2)} % '
-                ),
+                Text('${(progressPercent * 100).toStringAsFixed(2)} % '),
               ],
             );
           });
-
-
     } else {
-
       // Allows user to decide when to start the upload
       return FlatButton.icon(
         label: Text('Upload to Firebase'),
         icon: Icon(Icons.cloud_upload),
         onPressed: _startUpload,
       );
-
     }
   }
 }
-
-
 
 class AddPhotographerForm extends StatefulWidget {
   final titleController = TextEditingController();
@@ -138,29 +111,42 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
   final _formKey = GlobalKey<
       FormState>(); //because they are dependence each other (the forms).
 
-
   String index = UniqueKey().toString();
   String name = '';
   String descreption = '';
   String phone_number = " ";
 
   String place = '';
-  String video = " ";
-  String photographic_still = " ";
-
-  int area = 0;
+  String video;
+ // String stills = " ";
+  String photographic_still;
+  String webUrl = "";
+  String area;
   int rate = 0;
   String imageFileName = "";
   String imageUrl = "";
   String error = " ";
   File _imageFile;
+  var _areas = [
+    "All",
+    "North",
+    "South",
+    "Center",
+  ];
 
-  final CloudStorageService _cloudStorageService =
-  CloudStorageService();
+  var _booleans = [
+    "True",
+    "False",
+  ];
 
-    static CloudStorageResult _storageResult;
+  static CloudStorageResult _storageResult;
 
-  Future<void> _pickImage(ImageSource source) async{
+  Future<void> _pickImage(ImageSource source) async {
+    setState(() {
+      _imageFile = null;
+      _uploadTask = null;
+    });
+
     File selected = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
@@ -253,23 +239,60 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
                   },
                 ),
                 new Padding(padding: EdgeInsets.all(8.0)),
+
+                FormField<String>(
+                  builder: (FormFieldState<String> state) {
+                    return InputDecorator(
+                      decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                          errorStyle: TextStyle(
+                              color: Colors.redAccent, fontSize: 16.0),
+                          hintText: 'Select Area',
+                          labelText: 'Select Area',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                      isEmpty: area == '',
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: area,
+                          isDense: true,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              area = newValue;
+                              state.didChange(newValue);
+                            });
+                          },
+                          items: _areas.map((String value) {
+                            return DropdownMenuItem<String>(
+
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
                 TextFormField(
                   validator: (val) =>
-                      val.length < 0 ? "Enter Number Between 1 to 4" : null,
+                      val.length < 0 ? "Enter Your Website Url" : null,
                   decoration: InputDecoration(
                       fillColor: Colors.white,
                       border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(20.0),
                         borderSide: new BorderSide(),
                       ),
-                      labelText: "Area"),
-                  keyboardType: TextInputType.number,
+                      labelText: "Website Url"),
+                  keyboardType: TextInputType.url,
                   style: new TextStyle(
                     fontFamily: "Poppins",
                   ),
                   onChanged: (val) {
                     setState(() {
-                      area = val as int;
+                      webUrl = val ;
                     });
                   },
                 ),
@@ -283,7 +306,7 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
                         borderSide: new BorderSide(),
                       ),
                       labelText: "Phone number"),
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.phone,
                   inputFormatters: <TextInputFormatter>[
                     WhitelistingTextInputFormatter.digitsOnly
                   ],
@@ -296,8 +319,116 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
                     });
                   },
                 ),
-                new Padding(padding: EdgeInsets.all(8.0)),
-                TextFormField(
+                //new Padding(padding: EdgeInsets.all(8.0)),
+
+               /* FormField<String>(
+                  builder: (FormFieldState<String> state) {
+                    return InputDecorator(
+                      decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                          errorStyle: TextStyle(
+                              color: Colors.redAccent, fontSize: 16.0),
+                          hintText: 'Select Area',
+                          labelText: 'Select Area',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                      isEmpty: area == '',
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: area,
+                          isDense: true,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              area = newValue;
+                              state.didChange(newValue);
+                            });
+                          },
+                          items: _areas.map((String value) {
+                            return DropdownMenuItem<String>(
+
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    );
+                  },
+                ),*/
+                FormField<String>(
+                  builder: (FormFieldState<String> state) {
+                    return InputDecorator(
+                      decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                          errorStyle: TextStyle(
+                              color: Colors.redAccent, fontSize: 16.0),
+                          hintText: 'Select True or False',
+                          labelText: 'Stills?',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                      isEmpty: photographic_still == '',
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: photographic_still,
+                          isDense: true,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              photographic_still = newValue;
+                              state.didChange(newValue);
+                            });
+                          },
+                          items: _booleans.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                FormField<String>(
+                  builder: (FormFieldState<String> state) {
+                    return InputDecorator(
+                      decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                          errorStyle: TextStyle(
+                              color: Colors.redAccent, fontSize: 16.0),
+                          hintText: 'Select True or False',
+                          labelText: 'Video?',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                      isEmpty: video == '',
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: video,
+                          isDense: true,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              video = newValue;
+                              state.didChange(newValue);
+                            });
+                          },
+                          items: _booleans.map((String value) {
+                            return DropdownMenuItem<String>(
+
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+               /* TextFormField(
                   validator: (val) =>
                       val.length < 4 ? "Type true or type false" : null,
                   decoration: InputDecoration(
@@ -307,10 +438,6 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
                         borderSide: new BorderSide(),
                       ),
                       labelText: "Video? Type true or false"),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    WhitelistingTextInputFormatter.digitsOnly
-                  ],
                   style: new TextStyle(
                     fontFamily: "Poppins",
                   ),
@@ -331,10 +458,6 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
                         borderSide: new BorderSide(),
                       ),
                       labelText: "still? Type true or false"),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    WhitelistingTextInputFormatter.digitsOnly
-                  ],
                   style: new TextStyle(
                     fontFamily: "Poppins",
                   ),
@@ -343,8 +466,8 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
                       photographic_still = val;
                     });
                   },
-                ),
-                Text('Post Image'),
+                ),*/
+                Text('Add Image'),
                 GestureDetector(
                   onTap: () => _pickImage(ImageSource.gallery),
                   child: Container(
@@ -360,9 +483,12 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
                             style: TextStyle(color: Colors.grey[400]),
                           )
                         // If we 90have a selected image we want to show it
-                        :Uploader(file: _imageFile, storageResult:_storageResult,),/*
+                        : Uploader(
+                            file: _imageFile,
+                            storageResult: _storageResult,
+                          ), /*
 
-                        *///Image.file(_imageFile),
+                        */ //Image.file(_imageFile),
                   ),
                 ),
                 RaisedButton(
@@ -376,50 +502,34 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
                     form.save();
                     if (form.validate()) //will check if our from is legit
                     {
-
-                      StorageTaskSnapshot storageSnapshot =  await _uploadTask.onComplete;
-                      dynamic downloadUrl = await storageSnapshot.ref.getDownloadURL();
+                      StorageTaskSnapshot storageSnapshot =
+                          await _uploadTask.onComplete;
+                      dynamic downloadUrl =
+                          await storageSnapshot.ref.getDownloadURL();
                       String imageUrl1 = downloadUrl.toString();
 
                       // if (!model.busy) {
-                      dynamic result =
-                          await DatabaseService().addPhotographer(Photographer(
-                        name: name,
-                        documentId: index,
-                        descreption: descreption,
-                        place: place,
-                        rate: 0,
-                        area: area,
-                        phone_number: phone_number,
-                        photographic_still: photographic_still,
-                        video: video,
-                        imageUrl: imageUrl1,
-                        imageFileName: name + filePath,
-                      ));
+                      dynamic result = await DatabaseService().addPhotographer(
+                          index,
+                          name,
+                          descreption,
+                          place,
+                          area,
+                          rate,
+                          index,
+                          name + " " + filePath,
+                          imageUrl1,
+                          phone_number,
+                          video,
+                          webUrl,
+                          photographic_still);
+
                       Navigator.pop(context);
+
                       if (result == null) {
                         setState(() => error =
                             'Could not sign in with those credentials'); //TODO check
                       }
-                      /* model.addPhotographer(Business_name:name,
-                                                documentId: index,
-                                                descreption:descreption,
-                                                place:place,
-                                                area:area,
-                                                phone_number:phone_number,
-                                                photographic_still:photographic_still,
-                                                video: video,
-                                                );
-                          //}
-
-                        dynamic result = await DatabaseService(uid: widget.user.uid)
-                            .addGuestData(index, proximityGroup, last_name,
-                            first_name, quantity_invited,phone_number);
-                        Navigator.pop(context);
-                        if (result == null) {
-                          setState(() => error =
-                          'Could not sign in with those credentials'); //TODO check
-                        }*/
                     }
                   },
                 ),
@@ -437,26 +547,25 @@ class _AddPhotographerFormState extends State<AddPhotographerForm> {
   }
 }
 
-class ImageCapture extends StatefulWidget {//Capture image from gallery and allow to user to crop or resize it
+class ImageCapture extends StatefulWidget {
+  //Capture image from gallery and allow to user to crop or resize it
   @override
   _ImageCaptureState createState() => _ImageCaptureState();
 }
 
 class _ImageCaptureState extends State<ImageCapture> {
   File _imageFile;
-  
-  Future<void> _pickImage(ImageSource source) async{
+
+  Future<void> _pickImage(ImageSource source) async {
     File selected = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _imageFile = selected;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold();
   }
 }
-
-

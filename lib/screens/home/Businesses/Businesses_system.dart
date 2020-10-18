@@ -33,6 +33,9 @@ const kDefaultShadow = BoxShadow(
 
 
 class BusinessesGrid extends StatefulWidget {
+  final User user;
+
+  BusinessesGrid(this.user);
   @override
   _BusinessesGridState createState() => _BusinessesGridState();
 }
@@ -62,7 +65,7 @@ class _BusinessesGridState extends State<BusinessesGrid> {
         color: kBlueColor,
         child: Column(
           children: [
-            createGridItem(0,context),
+            createGridItem(0,context,widget.user),
            // SearchBox(),
             //CategoryList(),
 
@@ -76,7 +79,7 @@ class _BusinessesGridState extends State<BusinessesGrid> {
 }
 
 
-Widget createGridItem(int position,BuildContext context) {
+Widget createGridItem(int position,BuildContext context,User user) {
   //final HomeManagement _home = HomeManagement();
   var color = Colors.white;
   var iconData = Icons.add;
@@ -84,7 +87,7 @@ Widget createGridItem(int position,BuildContext context) {
   var onTap = () {};
 
 
-  var user = Provider.of<User>(context);
+  //var user = Provider.of<User>(context);
   switch (position) {
     case 0:
       color = Colors.orange[300].withOpacity(.5);

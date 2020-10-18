@@ -204,21 +204,21 @@ packages:
       name: get
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.11.1"
+    version: "3.12.1"
   get_core:
     dependency: transitive
     description:
       name: get_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.10.2"
+    version: "3.12.0"
   get_instance:
     dependency: transitive
     description:
       name: get_instance
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.10.2"
+    version: "3.12.0"
   get_it:
     dependency: "direct main"
     description:
@@ -232,28 +232,28 @@ packages:
       name: get_navigation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.10.2"
+    version: "3.12.0"
   get_rx:
     dependency: transitive
     description:
       name: get_rx
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.10.2"
+    version: "3.12.0"
   get_state_manager:
     dependency: transitive
     description:
       name: get_state_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.10.2"
+    version: "3.12.0"
   get_utils:
     dependency: transitive
     description:
       name: get_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.10.2"
+    version: "3.12.0"
   hints:
     dependency: "direct main"
     description:
@@ -407,7 +407,7 @@ packages:
       name: plugin_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   process:
     dependency: transitive
     description:
@@ -483,6 +483,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smooth_star_rating:
+    dependency: "direct main"
+    description:
+      name: smooth_star_rating
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   source_span:
     dependency: transitive
     description:
@@ -574,6 +581,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  url_launcher:
+    dependency: "direct main"
+    description:
+      name: url_launcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.7.2"
+  url_launcher_linux:
+    dependency: transitive
+    description:
+      name: url_launcher_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+1"
+  url_launcher_macos:
+    dependency: transitive
+    description:
+      name: url_launcher_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+8"
+  url_launcher_platform_interface:
+    dependency: transitive
+    description:
+      name: url_launcher_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.8"
+  url_launcher_web:
+    dependency: transitive
+    description:
+      name: url_launcher_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4+1"
+  url_launcher_windows:
+    dependency: transitive
+    description:
+      name: url_launcher_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+1"
   uuid:
     dependency: transitive
     description:

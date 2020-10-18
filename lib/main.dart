@@ -5,7 +5,11 @@ import 'package:eventapp/services/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+import 'locator.dart';
+
+void main()  {
+  setupLocator();
+  runApp(MyApp());}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -22,7 +26,7 @@ class MyApp extends StatelessWidget {
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: kBackgroundColor,
           textTheme: TextTheme(
-            display1: TextStyle(color: Color(0xFFFFAB9E),
+            display1: TextStyle(color: Colors.teal[200],//Color(0xFFFFAB9E),
                 //0xFFB0CBCA
                 fontWeight: FontWeight.bold,
                 fontFamily: "CaviarDreams",
